@@ -9,6 +9,6 @@ class TagAdmin(admin.ModelAdmin):
 
 
 @admin.register(Task)
-class DishAdmin(admin.ModelAdmin):
+class TaskAdmin(admin.ModelAdmin):
     search_fields = ("content", "created_at", "deadline", "tags")
     list_filter = ("content", "created_at", "deadline", "is_done", "tags",)
