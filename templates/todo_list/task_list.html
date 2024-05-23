@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Task List
+    <a href="{% url 'todo_list:task-create' %}" class="btn btn-primary link-to-page">
+      Add Task
+    </a>
+  </h1>
+
+  {% if task_list %}
+    <table class="table">
+      <tr>
+        <th>Task ID</th>
+        <th>Task content</th>
+        <th>Created</th>
+        <th>Deadline</th>
+        <th>Done</th>
+        <th>Change Status</th>
+        <th>Tags</th>
+        <th>Update</th>
+        <th>Delete</th>
+      </tr>
+
+      {% for task in task_list %}
+        <tr>
+          <td>
+              {{ task.id }}
+          </td>
+          <td>
+              {{ task.content }}
+          </td>
+          <td>
+              {{ task.created_at }}
+          </td>
+          <td>
+              {{ task.deadline }}
+          </td>
+          <td>
+              {{ task.is_done }}
+          </td>
+          <td>
+            {% if task.is_done %}
+              <form action="{% url 'todo_list:toggle-assign' pk=task.id current_page=page_obj.number %}" method="post" novalidate>
+                {% csrf_token %}
+                <input type="submit" value="Make NOT" class="btn btn-primary btn-sm mb-0">
+              </form>
+            {% else %}
+              <form action="{% url 'todo_list:toggle-assign' pk=task.id current_page=page_obj.number %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Make Done" class="btn btn-info btn-sm mb-0">
+              </form>
+            {% endif %}
+          </td>
+          <td>
+              {{ task.tags.name }}
+          </td>
+
+          <td>
+            <a href="{% url 'todo_list:task-update' pk=task.id %}">
+              Update
+            </a>
+          </td>
+          <td>
+            <a style="color: red"
+              href="{% url 'todo_list:task-delete' pk=task.id %}">
+              Delete
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+
+  {% else %}
+      <p>There are no tasks in the service.</p>
+  {% endif %}
+{% endblock %}
