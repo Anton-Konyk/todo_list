@@ -54,7 +54,11 @@
             {% endif %}
           </td>
           <td>
-              {{ task.tags.name }}
+            {% for tag in task.tags.all %}
+              {{ tag.name }},
+            {% empty %}
+              <p>No tags!</p>
+            {% endfor %}
           </td>
 
           <td>
