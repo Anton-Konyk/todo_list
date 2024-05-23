@@ -38,13 +38,10 @@ class ToggleAssignDoneToNotDone(LoginRequiredMixin, View):
 
         if form.is_valid():
             task = Task.objects.get(id=pk)
-            print(task.id)
             if task.is_done:
                 task.is_done = False
-                print(f"False: {task.is_done}")
             else:
                 task.is_done = True
-                print(f"True: {task.is_done}")
             task.save()
         return HttpResponseRedirect(reverse_lazy(
             "todo_list:task-list") + f"?page={current_page}"
